@@ -1,0 +1,15 @@
+# ROS 2 (colcon) 빌드/설치/로그 폴더 무시
+build/
+install/
+log/
+
+# OS 및 에디터 설정 파일 무시
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 파이썬 가상환경 및 캐시
+venv/
+__pycache__/
+*.pyc
