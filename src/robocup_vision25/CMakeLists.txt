@@ -17,7 +17,7 @@ find_package(camera_info_manager REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(humanoid_interfaces REQUIRED)
-find_package(dynamixel_rdk_msgs REQUIRED)
+
 
 # Include directories
 include_directories(
@@ -28,64 +28,39 @@ include_directories(
   ${cv_bridge_INCLUDE_DIRS} # cv_bridge include 디렉토리 추가
 )
 
-set(SOURCES
-  src/robocup_vision25.cpp
+add_executable(robocup_vision25_node src/robocup_vision25.cpp)
+
+target_include_directories(robocup_vision25_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
 )
 
-set(HEADERS
-  include/robocup_vision25/robocup_vision25.hpp
-  include/YoloV4/YoloV4.hpp
-  include/pan_tilt/pan_tilt.hpp
-)
+target_compile_features(robocup_vision25_node PUBLIC c_std_99 cxx_std_17)
 
-# Declare the executable
-add_executable(robocup_vision25 ${SOURCES})
-
-# Link libraries
-target_link_libraries(robocup_vision25
+target_link_libraries(robocup_vision25_node
   ${rclcpp_LIBRARIES}
   ${OpenCV_LIBRARIES}
-  Boost::system
-  Boost::thread
-  -lv4l2
-  -ludev
+  ${cv_bridge_LIBRARIES}
+  ${sensor_msgs_LIBRARIES}
+  ${image_transport_LIBRARIES}
 )
 
-# Add dependencies
-ament_target_dependencies(robocup_vision25
+ament_target_dependencies(robocup_vision25_node
   rclcpp
   std_msgs
   cv_bridge
   sensor_msgs
   image_transport
-  camera_info_manager
   OpenCV
-  Boost
   humanoid_interfaces
-  dynamixel_rdk_msgs
 )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
-
 install(TARGETS
-  robocup_vision25
+  robocup_vision25_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY launch/
-  DESTINATION share/${PROJECT_NAME}/launch
-)
 
 ament_package()
+
+

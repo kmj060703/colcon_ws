@@ -6,6 +6,9 @@
 #include <memory>
 #include <vector>
 
+#include "humanoid_interfaces/msg/human_pj_vision.hpp"  
+#include "geometry_msgs/msg/point.hpp"
+
 int dir=0;
 int move=0;
 
@@ -14,15 +17,20 @@ class ImageViewer : public rclcpp::Node
 {
 public:
   ImageViewer()
-  : Node("image_viewer_node")
+  : Node("robocup_vision25_node")
   {
     const std::string image_topic = "/camera/image_raw";
 
     subscription_ = this->create_subscription<sensor_msgs::msg::Image>(
       image_topic, 10, std::bind(&ImageViewer::image_callback, this, std::placeholders::_1));
+
+    coords_pub_ = this->create_publisher<humanoid_interfaces::msg::HumanPjVision>(
+      "/robit_mj/red_pixel_flag", 10);
+
     
     RCLCPP_INFO(this->get_logger(), "Image viewer node has been started.");
     RCLCPP_INFO(this->get_logger(), "Subscribing to topic: %s", image_topic.c_str());
+    RCLCPP_INFO(this->get_logger(), "Publishing red pixel flag to: /robit_mj/red_pixel_flag");
 
     cv::namedWindow("oCam Feed");
     cv::namedWindow("White Mask");
@@ -121,7 +129,35 @@ private:
       // }
       
       cv::waitKey(1);
+       // --- 빨간 픽셀 좌표 찾기 ---
+      std::vector<cv::Point> locations;
+      cv::findNonZero(red_mask, locations);
+
+      // --- FLAG 계산 ---
+      int flag = 0;
+      int half_row = frame.rows * 0.75;
+      for (const auto& pt : locations)
+      {
+        if (pt.y > half_row)   //화면 나누기 4 이하(아래쪽)에 빨간 픽셀이 있으면
+        {
+          flag = 1;
+        }
+        else 
+        {
+          flag = 0;
+        }
+      }
+
+      // --- 퍼블리시 ---
+      auto msg_out = std::make_unique<humanoid_interfaces::msg::HumanPjVision>();
+      msg_out->header = msg->header;
+      msg_out->flag = flag;
+
+      coords_pub_->publish(std::move(msg_out));
+
+      RCLCPP_INFO(this->get_logger(), "Published flag: %d", flag);
     }
+    
     catch (cv_bridge::Exception& e)
     {
       RCLCPP_ERROR(this->get_logger(), "cv_bridge exception: %s", e.what());
@@ -130,6 +166,7 @@ private:
   }
 
   rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr subscription_;
+  rclcpp::Publisher<humanoid_interfaces::msg::HumanPjVision>::SharedPtr coords_pub_;
 };
 
 int main(int argc, char * argv[])
