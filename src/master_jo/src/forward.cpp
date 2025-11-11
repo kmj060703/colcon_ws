@@ -7,7 +7,6 @@ using namespace std;
 Forward::Forward(std::shared_ptr<master_jo::MasterRcko> master)
     : Player(master) {
   cout << endl << "HELLO!!" << endl << endl;
-  
 }
 
 void Forward::stateInitial() {

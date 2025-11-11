@@ -241,6 +241,12 @@ void MasterJoNode::visionCallback(
     vision_movement_allowed_ = false;
   } else {
     vision_movement_allowed_ = true;
+    if(msg->flag == 1){
+      player->move(false);
+    }
+    else if(msg->flag == 0){
+      player->walkStart(10,0,0);
+    }
   }
 }
 

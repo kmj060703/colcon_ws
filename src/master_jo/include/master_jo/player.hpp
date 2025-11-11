@@ -41,13 +41,13 @@ class Player {
   virtual void stateSet() = 0;
   virtual void statePlay() = 0;
   virtual void stateFinished() = 0;
+  bool walkStart(int x, int y, int yaw);
 
  protected:
   const double PI = 3.14159265;
 
   Point opponent_goal;
 
-  bool walkStart(int x, int y, int yaw);
 
   bool walkPublish();
   bool visionPublish(int scan_mode, int pan = 0, int tilt = 0);

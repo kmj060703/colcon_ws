@@ -21,8 +21,8 @@ class YoloV4 {
 public:
     YoloV4() {
         // For Open Model
-        cfg_name = "/home/robit/colcon_ws/src/robocup_vision25/net/yolov4-tiny-1ch-cls3-v7.cfg";
-        weight_name = "/home/robit/colcon_ws/src/robocup_vision25/net/yolov4-tiny-1ch-cls3-v7_100000.weights";
+        cfg_name = "/home/kmj/colcon_ws/src/robocup_vision25/net/yolov4-tiny-1ch-cls3-v7.cfg";
+        weight_name = "/home/kmj/colcon_ws/src/robocup_vision25/net/yolov4-tiny-1ch-cls3-v7_100000.weights";
 
         // For Model Param
         NUM_CLASSES = 3;

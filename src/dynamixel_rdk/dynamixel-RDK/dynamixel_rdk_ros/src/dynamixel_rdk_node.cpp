@@ -46,8 +46,8 @@ DynamixelRDKNode::on_configure(const rclcpp_lifecycle::State &)
     control_topic_.c_str(), 10,
     std::bind(&DynamixelRDKNode::dynamixel_control_callback, this, std::placeholders::_1));
 
-  dynamixel_sub_ = create_subscription<dynamixel_rdk_msgs::msg::DynamixelMsgs>(
-    "pan_dxl", 10, std::bind(&DynamixelRDKNode::dynamixel_callback, this, std::placeholders::_1));
+  // dynamixel_sub_ = create_subscription<dynamixel_rdk_msgs::msg::DynamixelMsgs>(
+  //   "pan_dxl", 10, std::bind(&DynamixelRDKNode::dynamixel_callback, this, std::placeholders::_1));
 
   try {
     dynamixel_ctrl_ = std::make_shared<DynamixelCtrl>(
@@ -204,17 +204,13 @@ void DynamixelRDKNode::dynamixel_control_callback(
   dynamixel_ctrl_->sync_write(goal_positions, goal_velocities, goal_accelerations);
 }
 
-void DynamixelRDKNode::dynamixel_callback(
-    dynamixel_rdk_msgs::msg::DynamixelMsgs::SharedPtr msg)
-{
-    // 단일 모터 정보라 해도 sync_write는 벡터 필요
-    std::vector<double> goal_positions   = {msg->goal_position};
-    std::vector<double> velocities       = {msg->profile_velocity};
-    std::vector<double> accelerations    = {msg->profile_acceleration};
-
-    // sync_write 호출
-    dynamixel_ctrl_->sync_write(goal_positions, velocities, accelerations);
-}
+// void DynamixelRDKNode::dynamixel_callback(
+//   const dynamixel_rdk_msgs::msg::DynamixelMsgs::SharedPtr msg)
+// {
+//   for (auto & motor : msg->motor) {
+//     dynamixel_ctrl_->single_write(static_cast < uint8_t > 22, motor.goal_position, motor.profile_velocity,motor.profile_acceleration);
+//   }
+// }
 
 void DynamixelRDKNode::dynamixel_status_publish()
 {

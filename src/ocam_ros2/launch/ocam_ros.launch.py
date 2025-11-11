@@ -13,8 +13,8 @@ def generate_launch_description():
                 {"frame_rate": 15.0},
                 {"exposure": 180},
                 {"gain": 110},
-                {"wb_blue": 250},
-                {"wb_red": 130},
+                {"wb_blue": 180},
+                {"wb_red": 120},
                 {"auto_exposure": False},
                 {"show_image": True},
             ]
