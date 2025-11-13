@@ -92,7 +92,7 @@ namespace master_jo
     master->ik.x_length = 0;
     master->ik.y_length = 0;
     master->ik.yaw = 0;
-
+    // ikendflag를 보내서 
     return master->ikEnd.ikend;
   }
 
