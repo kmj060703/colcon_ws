@@ -30,37 +30,35 @@ namespace master_jo
 
   void Forward::statePlay()
   {
-    cout << endl
-         << "짜잇호" << endl
+ 
+    int current_flag = master->vision.flag;
+
+    if (current_flag != previous_vision_flag_)
+    {
+        walkStop();
+        sleep(3);
+    }
+
+    if (current_flag == 0)
+    {
+        walkStart(10, 0, 0);
+    }
+    else if (current_flag == 1)
+    {
+        cout << endl
+             << "호잇짜 flag 1" << endl
+             << endl;
+        walkStart(0, -20, 0);
+    }
+    else if (current_flag == 2)
+    {
+           cout << endl
+         << "짜잇호 flag 2" << endl
          << endl;
-    if (master->vision.flag == 0)
-    {
-      stop_or_go = false;
-      walkStart(10, 0, 0);
+        walkStart(0, 20, 0);
     }
-    else if (master->vision.flag == 1)
-    {
-      if (stop_or_go == false)
-      {
-        walkStop();
-        sleep(1000);
-        stop_or_go = true;
-      }
-      cout << endl
-           << "호잇짜" << endl
-           << endl;
-      walkStart(0, 20, 0);
-    }
-    else if (master->vision.flag == 2)
-    {
-      if (stop_or_go == false)
-      {
-        walkStop();
-        sleep(1000);
-        stop_or_go = true;
-      }
-      walkStart(0, -20, 0);
-    }
+
+    previous_vision_flag_ = current_flag;
   }
 
   void Forward::stateFinished()

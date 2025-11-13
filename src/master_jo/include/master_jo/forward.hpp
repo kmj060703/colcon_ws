@@ -3,22 +3,22 @@
 
 #include "player.hpp"
 
-namespace master_jo {
-
-class Forward : public Player
+namespace master_jo
 {
-public:
-    Forward(std::shared_ptr<master_jo::MasterRcko> master);
 
-    void stateInitial();
-    void stateReady();
-    void stateSet();
-    void statePlay();
-    void stateFinished();
-    bool stop_or_go = false;
-};
+    class Forward : public Player
+    {
+    public:
+        Forward(std::shared_ptr<master_jo::MasterRcko> master);
+
+        void stateInitial();
+        void stateReady();
+        void stateSet();
+        void statePlay();
+        void stateFinished();
+        int previous_vision_flag_ = -1;
+    };
 
 }
-
 
 #endif
