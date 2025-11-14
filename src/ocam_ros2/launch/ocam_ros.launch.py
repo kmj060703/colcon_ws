@@ -14,7 +14,7 @@ def generate_launch_description():
                 {"exposure": 180},
                 {"gain": 110},
                 {"wb_blue": 180},
-                {"wb_red": 120},
+                {"wb_red": 145},
                 {"auto_exposure": False},
                 {"show_image": True},
             ]

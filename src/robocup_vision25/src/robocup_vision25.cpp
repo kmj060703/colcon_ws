@@ -143,7 +143,7 @@ private:
 
       int lower_region_boundary2_row = frame.rows * 0.6;
       int lower_region_boundary2_col = frame.cols * 0.4;
-      const int min_white_pixels_in_region = 10000;
+      const int min_white_pixels_in_region = 4000;
       int white_pixels_in_lower_region = 0;
       for (const auto &pt : white_locations)
       {
