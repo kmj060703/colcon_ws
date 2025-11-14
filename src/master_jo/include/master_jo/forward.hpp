@@ -16,7 +16,13 @@ namespace master_jo
         void stateSet();
         void statePlay();
         void stateFinished();
-        int previous_vision_flag_ = -1;
+    // 상태 관리를 위한 boolean 플래그 사용
+    bool is_waiting_for_stop_ = false; 
+    
+    int previous_vision_flag_ = -1;
+    int target_vision_flag_ = -1; // 정지 후 수행할 행동을 결정하는 플래그
+
+
     };
 
 }
