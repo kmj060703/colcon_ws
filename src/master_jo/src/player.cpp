@@ -79,20 +79,23 @@ namespace master_jo
   {
     master->ik.flag = true;
 
-    master->ik.x_length = x;
-    master->ik.y_length = y;
-    master->ik.yaw = yaw;
+    this->x = x;
+    this->y = y;
+    this->yaw = yaw;
 
+    cout<<x<<endl;
+    cout<<y<<endl;
+    cout<<yaw<<endl; //got dameit master_jo_node에서는 반영 1나도 안됨
     return master->ikEnd.ikend;
   }
 
   bool Player::walkStop()
   {
     master->ik.flag = false;
-    master->ik.x_length = 0;
-    master->ik.y_length = 0;
-    master->ik.yaw = 0;
-    // ikendflag를 보내서 
+    this->x = 0;
+    this->y = 0;
+    this->yaw = 0;
+
     return master->ikEnd.ikend;
   }
 
